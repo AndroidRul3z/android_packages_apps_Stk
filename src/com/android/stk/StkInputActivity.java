@@ -28,11 +28,13 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.inputmethod.EditorInfo;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.TextView.BufferType;
@@ -135,7 +137,7 @@ public class StkInputActivity extends Activity implements View.OnClickListener,
         CatLog.d(LOG_TAG, "onCreate - mIsResponseSent[" + mIsResponseSent + "]");
 
         // Set the layout for this activity.
-        requestWindowFeature(Window.FEATURE_LEFT_ICON);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.stk_input);
 
         // Initialize members
@@ -366,9 +368,11 @@ public class StkInputActivity extends Activity implements View.OnClickListener,
         }
         inTypeView.setText(inTypeId);
 
+        ImageView imageView = (ImageView) findViewById(R.id.icon);
         if (mStkInput.icon != null) {
-            setFeatureDrawable(Window.FEATURE_LEFT_ICON, new BitmapDrawable(
-                    mStkInput.icon));
+            imageView.setContentDescription(StkAppService.TEXT_ICON_FROM_COMMAND + ": "
+                    + mStkInput.text);
+            imageView.setImageBitmap(mStkInput.icon);
         }
 
         // Handle specific global and text attributes.
@@ -387,9 +391,10 @@ public class StkInputActivity extends Activity implements View.OnClickListener,
             numOfCharsView.setText(lengthLimit);
 
             if (!mStkInput.echo) {
-                mTextIn.setInputType(InputType.TYPE_CLASS_NUMBER
-                                     | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                mTextIn.setTransformationMethod(PasswordTransformationMethod
+                        .getInstance());
             }
+            mTextIn.setImeOptions(EditorInfo.IME_FLAG_NO_FULLSCREEN);
             // Set default text if present.
             if (mStkInput.defaultText != null) {
                 mTextIn.setText(mStkInput.defaultText);

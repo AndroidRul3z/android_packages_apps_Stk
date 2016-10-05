@@ -22,15 +22,23 @@
 
     <original-package android:name="com.android.stk" />
 
+    <permission android:name="android.permission.SEND_RECEIVE_STK_INTENT"
+                android:label="@string/stk_intent_permission"
+                android:protectionLevel="signature">
+    </permission>
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.RECEIVE_STK_COMMANDS" />
+    <uses-permission android:name="android.permission.SEND_RECEIVE_STK_INTENT"/>
 
     <application android:icon="@drawable/ic_launcher_sim_toolkit"
         android:label="@string/app_name"
         android:clearTaskOnLaunch="true"
         android:process="com.android.phone"
-        android:taskAffinity="android.task.stk">
+        android:taskAffinity="android.task.stk"
+        android:defaultToDeviceProtectedStorage="true"
+        android:directBootAware="true">
 
         <activity android:name="StkMain"
             android:theme="@android:style/Theme.NoDisplay"
@@ -102,6 +110,8 @@
                 <action android:name= "android.intent.action.stk.icc_status_change" />
                 <action android:name= "android.intent.action.stk.alpha_notify" />
                 <action android:name= "android.intent.action.LOCALE_CHANGED" />
+                <action android:name= "org.codeaurora.intent.action.stk.hci_connectivity" />
+                <action android:name= "org.codeaurora.action.stk.idle_screen"/>
             </intent-filter>
         </receiver>
 

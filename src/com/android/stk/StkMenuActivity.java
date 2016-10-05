@@ -271,7 +271,7 @@ public class StkMenuActivity extends ListActivity implements View.OnCreateContex
     public void onDestroy() {
         getListView().setOnCreateContextMenuListener(null);
         super.onDestroy();
-        CatLog.d(LOG_TAG, "onDestroy" + "," + mState);
+        CatLog.d(LOG_TAG, "onDestroy" + ", " + mState);
         //isMenuPending: if input act is finish by stkappservice when OP_LAUNCH_APP again,
         //we can not send TR here, since the input cmd is waiting user to process.
         if (!mIsResponseSent && !appService.isMenuPending(mSlotId)) {
@@ -311,7 +311,7 @@ public class StkMenuActivity extends ListActivity implements View.OnCreateContex
         menu.findItem(StkApp.MENU_ID_END_SESSION).setVisible(mainVisible);
         menu.findItem(StkApp.MENU_ID_HELP).setVisible(helpVisible);
 
-        return true;
+        return (mainVisible || helpVisible);
     }
 
     @Override
@@ -422,6 +422,7 @@ public class StkMenuActivity extends ListActivity implements View.OnCreateContex
             // Display title & title icon
             if (mStkMenu.titleIcon != null) {
                 mTitleIconView.setImageBitmap(mStkMenu.titleIcon);
+                mTitleIconView.setContentDescription(StkAppService.TEXT_ICON_FROM_COMMAND);
                 mTitleIconView.setVisibility(View.VISIBLE);
                 mTitleTextView.setVisibility(View.INVISIBLE);
                 if (!mStkMenu.titleIconSelfExplanatory) {
